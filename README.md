@@ -1,4 +1,4 @@
-# React, React Router y Redux from Production
+# React y React Router para Production
 
 Para la creación de este proyecto usaremos una herramienta llamada npx, para ello primero debes instalarlo con el comando:
 
@@ -20,7 +20,7 @@ Instalación de Babel y otras herramientas para que funcione con React:
 
     $ npm install --save-dev @babel/core @babel/preset-env @babel/preset-react @babel/plugin-transform-runtime babel-loader
 
-    $ npm install --save @babel/runtime
+    $ npm install --save @babel/runtime @babel/register
 
 Creamos el archivo de configuración de babel, agregando en la raiz del proyecto .babelrc con la siguiente información.
 
@@ -49,7 +49,7 @@ Script para ejecutar las tareas de Webpack (package.json):
 ```json
 {
   "scripts": {
-    "start": "webpack-dev-server --open --mode development",
+    "dev": "webpack-dev-server --open --mode development",
     "build": "webpack --mode production"
   },
 }
@@ -63,7 +63,7 @@ Utilizar React Router para poder navegar en un proyecto de React.
 
 Vamos a instalar React Router, la librería que nos va a permitir manejar rutas dentro de nuestra aplicación:
 
-    npm install react-router-dom --save
+    npm --save install react-router-dom
 
 ## Crear nuestro archivo de Rutas
 
@@ -75,47 +75,16 @@ Las rutas que añadamos debemos definirlas con el componente Route y estas deben
 - exact si queremos que funcione única y exactamente con la url que le digamos.
 - component para indicarle el componente que va a renderizar.
 
+# Server Side Render con Express
 
-Configuración de Webpack (webpack.config.js):
+- Express es el framework con el cual vamos a crear nuestro servidor.  
+- dotenv nos permite llamar a variables de entorno que almacenemos en el archivo .env 
 
-```javascript
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+    $ npm install --save express dotenv
 
-module.exports = {
-  entry: './src/frontend/index.js',
-  output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
-  },
-  resolve: {
-    extensions: ['.js', '.jsx'],
-  },
-  module: {
-    rules: [
-      {
-        test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-        },
-      },
-      {
-        test: /\.html$/,
-        use: {
-          loader: 'html-loader',
-        },
-      },
-    ],
-  },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: './public/index.html',
-      filename: './index.html',
-    }),
-  ],
-};
-```
+Herramienta que reinicia automáticamente la aplicación de Node.js cuando se detectan cambios.
+
+    $ npm install --save-dev nodemon
 
 ## Configuración final: ESLint
 
@@ -334,4 +303,57 @@ Podemos configurar las reglas de ESLint en el archivo .eslintrc.
     "yoda": [2, "never"]
   }
 }
+```
+
+Configuración de Webpack (webpack.config.js):
+
+```javascript
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+module.exports = {
+  entry: './src/frontend/index.js',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'bundle.js',
+  },
+  resolve: {
+    extensions: ['.js', '.jsx'],
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+        },
+      },
+      {
+        test: /\.html$/,
+        use: {
+          loader: 'html-loader',
+        },
+      },
+      {
+        test: /\.(png|gif|jpg|svg)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: { name: 'assets/[hash].[ext]' },
+          },
+        ],
+      },
+    ],
+  },
+  devServer: {
+    historyApiFallback: true,
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './public/index.html',
+      filename: './index.html',
+    }),
+  ],
+};
 ```
