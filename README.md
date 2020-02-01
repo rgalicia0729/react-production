@@ -1,5 +1,11 @@
 # React y React Router para Production
 
+Si usas mac es importante que instales CLI de xcode.
+
+    $ sudo rm -rf $(xcode-select -print-path)
+
+    $ xcode-select --install
+
 Para la creación de este proyecto usaremos una herramienta llamada npx, para ello primero debes instalarlo con el comando:
 
     $ npm i -g npx
@@ -49,11 +55,19 @@ Script para ejecutar las tareas de Webpack (package.json):
 ```json
 {
   "scripts": {
-    "dev": "webpack-dev-server --open --mode development",
+    "dev": "nodemon src/backend/index.js --exact babel-node",
     "build": "webpack --mode production"
   },
 }
 ```
+
+## Estilos con SASS
+
+Los preprocesadores como Sass son herramientas que nos permiten escribir CSS con una sintaxis un poco diferente y más amigable que luego se transformará en CSS normal. Gracias a Sass podemos escribir CSS con variables, mixins, bucles, entre otras características.
+
+Instalación de Sass:
+
+    $ npm install --save-dev mini-css-extract-plugin css-loader node-sass sass-loader autoprefixer postcss-loader
 
 # React Router
 
@@ -93,7 +107,7 @@ Los linters como ESLint son herramientas que nos ayudan a seguir buenas práctic
 Se encargan de revisar el código que escribimos para indicarnos dónde tenemos errores o posibles errores. En algunos casos también pueden solucionar los errores automáticamente. De esta manera podemos solucionar los errores incluso antes de que sucedan.
 Instalación de ESLint:
 
-    $ npm install --save-dev eslint babel-eslint eslint-config-airbnb eslint-plugin-import eslint-plugin-react eslint-plugin-jsx-a11y
+    $ npm install --save-dev eslint-loader eslint babel-eslint eslint-config-airbnb eslint-plugin-import eslint-plugin-react eslint-plugin-jsx-a11y
 
 Podemos configurar las reglas de ESLint en el archivo .eslintrc.
 
@@ -306,54 +320,3 @@ Podemos configurar las reglas de ESLint en el archivo .eslintrc.
 ```
 
 Configuración de Webpack (webpack.config.js):
-
-```javascript
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-
-module.exports = {
-  entry: './src/frontend/index.js',
-  output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
-  },
-  resolve: {
-    extensions: ['.js', '.jsx'],
-  },
-  module: {
-    rules: [
-      {
-        test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-        },
-      },
-      {
-        test: /\.html$/,
-        use: {
-          loader: 'html-loader',
-        },
-      },
-      {
-        test: /\.(png|gif|jpg|svg)$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: { name: 'assets/[hash].[ext]' },
-          },
-        ],
-      },
-    ],
-  },
-  devServer: {
-    historyApiFallback: true,
-  },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: './public/index.html',
-      filename: './index.html',
-    }),
-  ],
-};
-```

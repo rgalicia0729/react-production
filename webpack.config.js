@@ -1,5 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const autoprefixer = require('autoprefixer');
 
 module.exports = {
   entry: './src/frontend/index.js',
@@ -15,6 +17,14 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
+        enforce: 'pre',
+        use: {
+          loader: 'eslint-loader',
+        },
+      },
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
         },
@@ -24,6 +34,15 @@ module.exports = {
         use: {
           loader: 'html-loader',
         },
+      },
+      {
+        test: /\.(s*)css$/,
+        use: [
+          { loader: MiniCssExtractPlugin.loader },
+          'css-loader',
+          'sass-loader',
+          'postcss-loader',
+        ],
       },
       {
         test: /\.(png|gif|jpg|svg)$/,
@@ -43,6 +62,16 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './public/index.html',
       filename: './index.html',
+    }),
+    new MiniCssExtractPlugin({
+      filename: 'assets/[name].css',
+    }),
+    new HtmlWebpackPlugin.LoaderOptionsPlugin({
+      options: {
+        postcss: [
+          autoprefixer(),
+        ]
+      }
     }),
   ],
 };
