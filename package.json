@@ -4,6 +4,7 @@
   "description": "Proyecto base de react listo para produccion optimizado",
   "main": "index.js",
   "scripts": {
+    "start": "webpack-dev-server --open --mode development",
     "dev": "nodemon src/backend/index.js --exact babel-node",
     "build": "webpack --mode production"
   },
@@ -15,8 +16,12 @@
     "@babel/runtime": "^7.8.4",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "history": "^4.10.1",
+    "ignore-styles": "^5.0.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
+    "react-router": "^5.1.2",
+    "react-router-config": "^5.1.1",
     "react-router-dom": "^5.1.2"
   },
   "devDependencies": {
@@ -27,6 +32,8 @@
     "autoprefixer": "^9.7.4",
     "babel-eslint": "^10.0.3",
     "babel-loader": "^8.0.6",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-assign": "^6.22.0",
     "css-loader": "^3.4.2",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.0.1",
@@ -34,15 +41,17 @@
     "eslint-plugin-import": "^2.20.0",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.18.0",
-    "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
     "mini-css-extract-plugin": "^0.9.0",
     "node-sass": "^4.13.1",
     "nodemon": "^2.0.2",
     "postcss-loader": "^3.0.0",
+    "react-hot-loader": "^4.12.19",
     "sass-loader": "^8.0.2",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.10.2"
+    "webpack-dev-middleware": "^3.7.2",
+    "webpack-dev-server": "^3.10.2",
+    "webpack-hot-middleware": "^2.25.0"
   }
 }

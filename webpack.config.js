@@ -1,16 +1,38 @@
+const webpack = require('webpack');
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const autoprefixer = require('autoprefixer');
 
 module.exports = {
   entry: './src/frontend/index.js',
+  mode: 'development',
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
+    path: '/',
+    filename: 'assets/app.js',
+    publicPath: '/',
   },
   resolve: {
     extensions: ['.js', '.jsx'],
+  },
+  optimization: {
+    splitChunks: {
+      chunks: 'async',
+      name: true,
+      cacheGroups: {
+        vendors: {
+          name: 'vendors',
+          chunks: 'all',
+          reuseExistingChunk: true,
+          priority: 1,
+          filename: 'assets/vendor.js',
+          enforce: true,
+          test(module, chunks) {
+            const name = module.nameForCondition && module.nameForCondition();
+            return chunks.some((chunks) => chunks.name !== 'vendors' && /[\\/]node_modules[\\/]/.test(name));
+          },
+        },
+      },
+    },
   },
   module: {
     rules: [
@@ -30,18 +52,19 @@ module.exports = {
         },
       },
       {
-        test: /\.html$/,
-        use: {
-          loader: 'html-loader',
-        },
-      },
-      {
         test: /\.(s*)css$/,
         use: [
           { loader: MiniCssExtractPlugin.loader },
           'css-loader',
-          'sass-loader',
           'postcss-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              prependData: `
+                @import "${path.resolve(__dirname, 'src/frontend/assets/styles/Vars.scss')}";
+                `,
+            },
+          },
         ],
       },
       {
@@ -59,19 +82,16 @@ module.exports = {
     historyApiFallback: true,
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: './public/index.html',
-      filename: './index.html',
-    }),
     new MiniCssExtractPlugin({
-      filename: 'assets/[name].css',
+      filename: 'assets/app.css',
     }),
-    new HtmlWebpackPlugin.LoaderOptionsPlugin({
+    new webpack.LoaderOptionsPlugin({
       options: {
         postcss: [
           autoprefixer(),
-        ]
-      }
+        ],
+      },
     }),
+    new webpack.HotModuleReplacementPlugin(),
   ],
 };

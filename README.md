@@ -24,7 +24,7 @@ Babel es una herramienta muy popular para escribir JavaScript moderno y transfor
 
 Instalación de Babel y otras herramientas para que funcione con React:
 
-    $ npm install --save-dev @babel/core @babel/preset-env @babel/preset-react @babel/plugin-transform-runtime babel-loader
+    $ npm install --save-dev @babel/core @babel/preset-env @babel/preset-react @babel/plugin-transform-runtime babel-plugin-transform-class-properties react-hot-loader babel-plugin-transform-object-assign babel-loader
 
     $ npm install --save @babel/runtime @babel/register
 
@@ -38,7 +38,16 @@ Creamos el archivo de configuración de babel, agregando en la raiz del proyecto
   "presets": [
     "@babel/preset-env",
     "@babel/preset-react"
-    ]
+    ],
+    "env": {
+      "development": {
+        "plugins": [
+          "transform-class-properties",
+          "react-hot-loader/babel",
+          "babel-plugintransform-object-assign"
+        ]
+      }
+    }
 }
 ```
 
@@ -48,7 +57,7 @@ Webpack es una herramienta que nos ayuda a compilar multiples archivos (JavaScri
 
 Instalación de Webpack y algunos plugins:
 
-    $ npm install --save-dev webpack webpack-cli webpack-dev-server html-webpack-plugin html-loader file-loader
+    $ npm install --save-dev webpack webpack-cli webpack-dev-server html-webpack-plugin webpack-dev-middleware webpack-hot-middleware file-loader
 
 Script para ejecutar las tareas de Webpack (package.json):
 
@@ -99,6 +108,29 @@ Las rutas que añadamos debemos definirlas con el componente Route y estas deben
 Herramienta que reinicia automáticamente la aplicación de Node.js cuando se detectan cambios.
 
     $ npm install --save-dev nodemon
+  
+## Aplicando history y creando rutas para el servidor
+
+Vamos a instalar la dependencia history para poder crear un historial del navegador desde el servidor:
+
+    $ npm install --save react-router
+
+    $ npm install --save history
+
+Para crear el historial debemos importar el método createBrowserHistory de history.
+
+## Definiendo la función main para renderizado desde el servidor
+
+De momento ya nuestra aplicación es servida por Node.js a través de Express, llegó el momento de empezar a renderizar nuestro sitio del lado del servidor.
+
+Los dos elementos clave para esto son:
+
+- El método renderToString de react-dom/server que tal como dice su nombre, va a convertir un componente de React a String puro, lo va a renderizar.
+- El StaticRouter de react-router con el cual podemos crear un enrutador que no cambie de location.
+
+    $ npm install --save react-router-config
+
+    $ npm install --save ignore-styles
 
 ## Configuración final: ESLint
 
