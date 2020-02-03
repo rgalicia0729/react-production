@@ -57,7 +57,7 @@ Webpack es una herramienta que nos ayuda a compilar multiples archivos (JavaScri
 
 Instalación de Webpack y algunos plugins:
 
-    $ npm install --save-dev webpack webpack-cli webpack-dev-server html-webpack-plugin webpack-dev-middleware webpack-hot-middleware file-loader
+    $ npm install --save-dev webpack webpack-cli webpack-dev-server html-webpack-plugin webpack-dev-middleware webpack-hot-middleware terser-webpack-plugin compression-webpack-plugin webpack-manifest-plugin file-loader
 
 Script para ejecutar las tareas de Webpack (package.json):
 
@@ -141,6 +141,12 @@ Nuestro sitio actualmente presenta un problema con la carga de imágenes si le d
 ## Hydrate desde Express
 
 Actualmente nuestra aplicación se renderiza dos veces, una al realizar la petición y otra al ejecutar el método render de ReactDOM, para optimizar esto vamos a cambiar el método render por hydrate.
+
+## Configurando nuestro servidor para producción
+
+Helmet nos va a ayudar con la seguridad de nuestro servidor. Simplemente lo instalamos con yarn add helmet --exact y lo pasamos como middleware a Express.
+
+    $ npm install --save helmet
 
 ## Configuración final: ESLint
 

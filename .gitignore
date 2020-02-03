@@ -1,3 +1,6 @@
+# Build
+src/backend/public
+
 # Logs
 logs
 *.log

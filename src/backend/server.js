@@ -1,16 +1,18 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import webpack from 'webpack';
+import helmet from 'helmet';
 import main from './routes/main';
 
 dotenv.config();
 
 const ENV = process.env.NODE_ENV;
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
 const app = express();
 
 if (ENV === 'development') {
+  console.log(`Loading ${ENV} config`);
   const webpackConfig = require('../../webpack.config');
   const webpackDevMiddleware = require('webpack-dev-middleware');
   const webpackHotMiddleware = require('webpack-hot-middleware');
@@ -25,6 +27,12 @@ if (ENV === 'development') {
   };
   app.use(webpackDevMiddleware(compiler, serverConfig));
   app.use(webpackHotMiddleware(compiler));
+} else if (ENV === 'production') {
+  console.log(`Loading ${ENV} config`);
+  app.use(express.static(`${__dirname}/public`));
+  app.use(helmet());
+  app.use(helmet.permittedCrossDomainPolicies());
+  app.disable('x-powered-by');
 }
 
 app.get('*', main);
