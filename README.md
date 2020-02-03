@@ -132,6 +132,16 @@ Los dos elementos clave para esto son:
 
     $ npm install --save ignore-styles
 
+## Assets require hook
+
+Nuestro sitio actualmente presenta un problema con la carga de imágenes si le desactivas el JavaScript, para resolver esto vamos a instalar asset-require-hook lo que nos va a permitir indicarle al servidor donde se encuentran los assets de nuestra aplicación.
+
+    $ npm install --save asset-require-hook
+
+## Hydrate desde Express
+
+Actualmente nuestra aplicación se renderiza dos veces, una al realizar la petición y otra al ejecutar el método render de ReactDOM, para optimizar esto vamos a cambiar el método render por hydrate.
+
 ## Configuración final: ESLint
 
 El Git Ignore es un archivo que nos permite definir qué archivos NO queremos publicar en nuestros repositorios. Solo debemos crear el archivo .gitignore y escribir los nombres de los archivos y/o carpetas que no queremos publicar.

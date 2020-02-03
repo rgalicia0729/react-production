@@ -1,15 +1,17 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { hydrate } from 'react-dom';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import App from './routes/App';
 import './assets/styles/Main.scss';
 
-const history = createBrowserHistory();
+if (typeof window !== 'undefined') {
+  const history = createBrowserHistory();
 
-ReactDOM.render(
-  <Router history={history}>
-    <App />
-  </Router>,
-  document.getElementById('app'),
-);
+  hydrate(
+    <Router history={history}>
+      <App />
+    </Router>,
+    document.getElementById('app'),
+  );
+}
